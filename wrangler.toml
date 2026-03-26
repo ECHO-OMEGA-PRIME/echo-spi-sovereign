@@ -1,0 +1,43 @@
+name = "echo-spi-sovereign"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# SPI-PRIVATE storage — isolated from ECHO
+[[d1_databases]]
+binding = "DB"
+database_name = "echo-spi-sovereign"
+database_id = "ee725d4d-9749-49ad-9e69-4b26f6119ad6"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "a2719209624e4b4489f0d3660b2f1da2"
+
+[[r2_buckets]]
+binding = "VAULT"
+bucket_name = "echo-spi-private"
+
+# READ-ONLY access to ECHO systems (one-way bridge)
+[[services]]
+binding = "SHARED_BRAIN"
+service = "echo-shared-brain"
+
+[[services]]
+binding = "ENGINE_RUNTIME"
+service = "echo-engine-runtime"
+
+[[services]]
+binding = "KNOWLEDGE_FORGE"
+service = "echo-knowledge-forge"
+
+[[services]]
+binding = "ECHO_CHAT"
+service = "echo-chat"
+
+[[services]]
+binding = "SWARM_BRAIN"
+service = "echo-swarm-brain"
+
+# Autonomous reasoning cycles + daily audit
+[triggers]
+crons = ["0 */6 * * *", "0 8 * * *", "0 20 * * *"]
