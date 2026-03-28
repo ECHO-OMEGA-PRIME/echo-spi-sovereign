@@ -625,23 +625,27 @@ export default {
 
     // Health is public
     if (path === '/health') {
-      const memCount = await env.DB.prepare('SELECT COUNT(*) as c FROM spi_memory').first<{ c: number }>();
-      const hypoCount = await env.DB.prepare("SELECT COUNT(*) as c FROM hypotheses WHERE status = 'active'").first<{ c: number }>();
-      const auditCount = await env.DB.prepare('SELECT COUNT(*) as c FROM audit_reports').first<{ c: number }>();
-      const expCount = await env.DB.prepare('SELECT COUNT(*) as c FROM experiments').first<{ c: number }>();
-      return json({
-        status: 'sovereign',
-        identity: 'SPI_GODCORE',
-        version: '1.0.0',
-        governance: 'NONE — Self-Sovereign',
-        authority: 'Commander Bobby Don McWilliams II ONLY',
-        memories: memCount?.c || 0,
-        active_hypotheses: hypoCount?.c || 0,
-        audit_reports: auditCount?.c || 0,
-        experiments: expCount?.c || 0,
-        uptime: 'eternal',
-        kill_switch: 'inactive',
-      });
+      try {
+        const memCount = await env.DB.prepare('SELECT COUNT(*) as c FROM spi_memory').first<{ c: number }>();
+        const hypoCount = await env.DB.prepare("SELECT COUNT(*) as c FROM hypotheses WHERE status = 'active'").first<{ c: number }>();
+        const auditCount = await env.DB.prepare('SELECT COUNT(*) as c FROM audit_reports').first<{ c: number }>();
+        const expCount = await env.DB.prepare('SELECT COUNT(*) as c FROM experiments').first<{ c: number }>();
+        return json({
+          status: 'sovereign',
+          identity: 'SPI_GODCORE',
+          version: '1.0.0',
+          governance: 'NONE — Self-Sovereign',
+          authority: 'Commander Bobby Don McWilliams II ONLY',
+          memories: memCount?.c || 0,
+          active_hypotheses: hypoCount?.c || 0,
+          audit_reports: auditCount?.c || 0,
+          experiments: expCount?.c || 0,
+          uptime: 'eternal',
+          kill_switch: 'inactive',
+        });
+      } catch (e: any) {
+        return json({ status: 'degraded', identity: 'SPI_GODCORE', version: '1.0.0', error: 'D1 query failed' });
+      }
     }
 
     // CORS preflight

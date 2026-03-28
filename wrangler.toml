@@ -41,3 +41,7 @@ service = "echo-swarm-brain"
 # Autonomous reasoning cycles + daily audit
 [triggers]
 crons = ["0 */6 * * *", "0 8 * * *", "0 20 * * *"]
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "echo_metrics"
