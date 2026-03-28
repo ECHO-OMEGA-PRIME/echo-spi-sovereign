@@ -623,6 +623,11 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
+    // Root is public
+    if (path === '/') {
+      return json({ service: 'echo-spi-sovereign', status: 'operational' });
+    }
+
     // Health is public
     if (path === '/health') {
       try {
